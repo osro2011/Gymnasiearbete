@@ -3,25 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 
 namespace Gymnasiearbete.Models
 {
-    public class Rectangle
+    public class Rectangle : PhysicsObject
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public Shape ControlShape { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
         public Color Color { get; set; }
-
-        public Rectangle(double x, double y, int height, int width, Color color)
-        {
-            X = x;
-            Y = y;
-            Height = height;
-            Width = width;
-            Color = color;
-        }
     }
 }

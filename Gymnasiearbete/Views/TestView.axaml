@@ -1,9 +1,10 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
-             x:Class="Gymnasiearbete.Views.MainView">
-	<Canvas x:Name="MainCanvas">
+             mc:Ignorable="d"
+             x:Class="Gymnasiearbete.Views.TestView">
+	<Canvas Name="GameArea" ClipToBounds="True" Width="400" Height="400">
+		
 	</Canvas>
-</UserControl>
+</Window>
