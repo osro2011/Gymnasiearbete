@@ -25,6 +25,11 @@ namespace Gymnasiearbete.Views
             {
                 DrawShapes();
             };
+
+            _vm.DrawShapes += (s, args) =>
+            {
+                DrawShapes();
+            };
         }
 
         private void InitializeComponent()
@@ -34,6 +39,7 @@ namespace Gymnasiearbete.Views
 
         private void DrawShapes()
         {
+            // Maybe switch to DrawingContext? If I can figure out how it works anyway.
             MainCanvas.Children.Clear();
             
             foreach (DrawablePhysicsObject PhysicsShape in _vm.PhysicsShapes)
@@ -48,7 +54,8 @@ namespace Gymnasiearbete.Views
                                 Color = Rectangle.Color
                             },
                             Height = Rectangle.Height,
-                            Width = Rectangle.Width
+                            Width = Rectangle.Width,
+                            ZIndex = 0
                         };
                         MainCanvas.Children.Add(RectangleControl);
                         Canvas.SetLeft(RectangleControl, Rectangle.Position.X);
@@ -64,7 +71,8 @@ namespace Gymnasiearbete.Views
                                 Color = Circle.Color
                             },
                             Height = Circle.Radius * 2,
-                            Width = Circle.Radius * 2
+                            Width = Circle.Radius * 2,
+                            ZIndex = 0
                         };
                         MainCanvas.Children.Add(CircleControl);
                         Canvas.SetLeft(CircleControl, Circle.Position.X);
@@ -81,7 +89,8 @@ namespace Gymnasiearbete.Views
                             Stroke = new SolidColorBrush()
                             {
                                 Color = Line.Color
-                            }
+                            },
+                            ZIndex = 0
                         };
                         MainCanvas.Children.Add(LineControl);
                         Line.ControlShape = LineControl;

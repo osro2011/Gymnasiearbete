@@ -2,10 +2,12 @@
 using Avalonia.Media;
 using Avalonia.Threading;
 using Gymnasiearbete.Models;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
+using System.Reactive;
 
 namespace Gymnasiearbete.ViewModels
 {
@@ -14,11 +16,16 @@ namespace Gymnasiearbete.ViewModels
         private DispatcherTimer PhysicsTickTimer = new DispatcherTimer();
         private Stopwatch DeltaTimer = new Stopwatch();
         public EventHandler? PhysicsTicked;
+        public EventHandler? DrawShapes;
 
         private long LastTimeElapsed = 0;
         private long CurrentTimeElapsed { get; set; }
 
         public List<DrawablePhysicsObject> PhysicsShapes { get; set; }
+
+        public ReactiveCommand<Unit, Unit> Start { get; }
+        public ReactiveCommand<Unit, Unit> Stop { get; }
+        public ReactiveCommand<Unit, Unit> DrawOnce { get; }
 
         public MainViewModel()
         {
@@ -52,13 +59,28 @@ namespace Gymnasiearbete.ViewModels
             });
 
             // TODO: Add a start button to do this (Also a stop button)
+            Start = ReactiveCommand.Create(() => 
+            {
+                // Start Stopwatch for DeltaTime (Should be redundant since program is light but might as well)
+                DeltaTimer.Start();
 
-            // Start Stopwatch for DeltaTime (Should be redundant since program is light but might as well)
-            DeltaTimer.Start();
+                // Set FPS to 60 and start timer
+                PhysicsTickTimer.Interval = new TimeSpan(10000000 / 60);
+                PhysicsTickTimer.Start();
+            });
 
-            // Set FPS to 60 and start timer
-            PhysicsTickTimer.Interval = new TimeSpan(10000000 / 60);
-            PhysicsTickTimer.Start();
+            Stop = ReactiveCommand.Create(() =>
+            {
+                // Stop all timers
+                PhysicsTickTimer.Stop();
+
+                DeltaTimer.Stop();
+            });
+
+            DrawOnce = ReactiveCommand.Create(() =>
+            {
+                DrawShapes?.Invoke(this, EventArgs.Empty);
+            });
         }
 
         private void PhysicsTickTimer_Tick(object? sender, EventArgs e)
@@ -70,21 +92,25 @@ namespace Gymnasiearbete.ViewModels
 
         private void MoveShapes()
         {
+            // Set up delta time
             CurrentTimeElapsed = DeltaTimer.ElapsedMilliseconds;
             long DeltaTime = CurrentTimeElapsed - LastTimeElapsed;
             LastTimeElapsed = CurrentTimeElapsed;
 
-            // Move every shape 1px to the right
+            // Loop through each physics object
             foreach (PhysicsObject PhysicsShape in PhysicsShapes)
             {
                 double nextX = PhysicsShape.Position.X;
                 double nextY = PhysicsShape.Position.Y;
 
+                // Change velocity
                 PhysicsShape.Velocity += PhysicsShape.Acceleration;
 
+                // Set next position
                 nextX += PhysicsShape.Velocity.X * DeltaTime / 1000;
                 nextY += PhysicsShape.Velocity.Y * DeltaTime / 1000;
 
+                // Change position
                 PhysicsShape.Position = new Point(nextX, nextY);
             }
         }

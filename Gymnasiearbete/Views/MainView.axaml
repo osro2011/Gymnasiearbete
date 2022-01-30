@@ -2,8 +2,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
+             mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768"
              x:Class="Gymnasiearbete.Views.MainView">
-	<Canvas x:Name="MainCanvas">
-	</Canvas>
+	<Grid ColumnDefinitions="*, 200">
+		<Canvas x:Name="MainCanvas"
+				Grid.Column="0"
+				Grid.Row="0">
+		</Canvas>
+		<Border BorderBrush="Black"
+				BorderThickness="2"
+				ZIndex="1"
+				Grid.Column="1"
+				Grid.Row="0">
+			<StackPanel Background="LightGray"
+						ZIndex="1">
+				<Button Command="{Binding DrawOnce}">Draw Shapes</Button>
+				<StackPanel Orientation="Horizontal">
+					<Button Command="{Binding Start}">Start</Button>
+					<Button Command="{Binding Stop}">Stop</Button>
+				</StackPanel>
+			</StackPanel>
+		</Border>
+	</Grid>
 </UserControl>
