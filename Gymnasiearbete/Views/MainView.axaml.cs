@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -10,6 +11,7 @@ namespace Gymnasiearbete.Views
     public partial class MainView : UserControl
     {
         public Canvas MainCanvas { get; set; }
+
         MainViewModel _vm;
 
         public MainView()
@@ -17,6 +19,11 @@ namespace Gymnasiearbete.Views
             InitializeComponent();
 
             MainCanvas = this.FindControl<Canvas>("MainCanvas");
+
+            MainCanvas.PointerMoved += (s, args) =>
+            {
+                this.FindControl<TextBlock>("Coords").Text = args.GetCurrentPoint(MainCanvas).Position.ToString();
+            };
 
             _vm = new MainViewModel();
             DataContext = _vm;
