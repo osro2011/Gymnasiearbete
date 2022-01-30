@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Gymnasiearbete.Models;
 using Gymnasiearbete.ViewModels;
-using System.Collections.Generic;
+using System;
 
 namespace Gymnasiearbete.Views
 {
@@ -11,7 +11,6 @@ namespace Gymnasiearbete.Views
     {
         public Canvas MainCanvas { get; set; }
         MainViewModel _vm;
-
 
         public MainView()
         {
@@ -36,22 +35,63 @@ namespace Gymnasiearbete.Views
         private void DrawShapes()
         {
             MainCanvas.Children.Clear();
-            foreach (Models.Rectangle PhysicsShape in _vm.PhysicsShapes)
+            
+            foreach (DrawablePhysicsObject PhysicsShape in _vm.PhysicsShapes)
             {
-                if (PhysicsShape.ControlShape == null)
+                switch (PhysicsShape)
                 {
-                    Avalonia.Controls.Shapes.Rectangle RectangleControl = new Avalonia.Controls.Shapes.Rectangle
-                    {
-                        Fill = new SolidColorBrush
+                    case Rectangle Rectangle:
+                        Avalonia.Controls.Shapes.Rectangle RectangleControl = new Avalonia.Controls.Shapes.Rectangle
                         {
-                            Color = PhysicsShape.Color
-                        },
-                        Height = PhysicsShape.Height,
-                        Width = PhysicsShape.Width
-                    };
-                    MainCanvas.Children.Add(RectangleControl);
-                    Canvas.SetLeft(RectangleControl, PhysicsShape.Position.X);
-                    Canvas.SetTop(RectangleControl, PhysicsShape.Position.Y);
+                            Fill = new SolidColorBrush
+                            {
+                                Color = Rectangle.Color
+                            },
+                            Height = Rectangle.Height,
+                            Width = Rectangle.Width
+                        };
+                        MainCanvas.Children.Add(RectangleControl);
+                        Canvas.SetLeft(RectangleControl, Rectangle.Position.X);
+                        Canvas.SetTop(RectangleControl, Rectangle.Position.Y);
+                        Rectangle.ControlShape = RectangleControl;
+                        break;
+
+                    case Circle Circle:
+                        Avalonia.Controls.Shapes.Ellipse CircleControl = new Avalonia.Controls.Shapes.Ellipse
+                        {
+                            Fill = new SolidColorBrush
+                            {
+                                Color = Circle.Color
+                            },
+                            Height = Circle.Radius * 2,
+                            Width = Circle.Radius * 2
+                        };
+                        MainCanvas.Children.Add(CircleControl);
+                        Canvas.SetLeft(CircleControl, Circle.Position.X);
+                        Canvas.SetTop(CircleControl, Circle.Position.Y);
+                        Circle.ControlShape = CircleControl;
+                        break;
+
+                    case Line Line:
+                        Avalonia.Controls.Shapes.Line LineControl = new Avalonia.Controls.Shapes.Line
+                        {
+                            StrokeThickness = Line.Width,
+                            StartPoint = Line.Position,
+                            EndPoint = Line.Position + Line.Offset,
+                            Stroke = new SolidColorBrush()
+                            {
+                                Color = Line.Color
+                            }
+                        };
+                        MainCanvas.Children.Add(LineControl);
+                        Line.ControlShape = LineControl;
+                        break;
+
+                    case null:
+                        throw new NullReferenceException();
+
+                    default:
+                        throw new Exception("Unknown shape");
                 }
             }
         }

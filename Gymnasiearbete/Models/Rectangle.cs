@@ -9,11 +9,9 @@ using Avalonia.Media;
 
 namespace Gymnasiearbete.Models
 {
-    public class Rectangle : PhysicsObject
+    public class Rectangle : DrawablePhysicsObject
     {
-        public Shape ControlShape { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
-        public Color Color { get; set; }
     }
 }

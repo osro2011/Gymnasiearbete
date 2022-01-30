@@ -1,12 +1,9 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Gymnasiearbete.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -16,28 +13,42 @@ namespace Gymnasiearbete.ViewModels
     {
         private DispatcherTimer PhysicsTickTimer = new DispatcherTimer();
         private Stopwatch DeltaTimer = new Stopwatch();
-        public EventHandler PhysicsTicked;
+        public EventHandler? PhysicsTicked;
 
         private long LastTimeElapsed = 0;
         private long CurrentTimeElapsed { get; set; }
 
-        public List<PhysicsObject> PhysicsShapes { get; set; }
-        //public ObservableCollection<Shape> RenderShapes { get; set; }
+        public List<DrawablePhysicsObject> PhysicsShapes { get; set; }
 
         public MainViewModel()
         {
-            PhysicsShapes = new List<PhysicsObject>();
+            PhysicsShapes = new List<DrawablePhysicsObject>();
 
             PhysicsTickTimer.Tick += PhysicsTickTimer_Tick;
 
             // Add test square
-            PhysicsShapes.Add(new Models.Rectangle()
+            PhysicsShapes.Add(new Rectangle()
             {
                 Height = 20,
                 Width = 20,
                 Position = new Point(20, 20),
                 Color = new Color(255, 255, 0, 0),
                 Velocity = new Vector2(20, 0) // px/s
+            });
+            PhysicsShapes.Add(new Circle()
+            {
+                Radius = 10,
+                Position = new Point(20, 50),
+                Color = new Color(255, 0, 255, 0),
+                Velocity = new Vector2(20, 0)
+            });
+            PhysicsShapes.Add(new Line()
+            {
+                Position = new Point(20, 80),
+                Offset = new Point(20, 20),
+                Color = new Color(255, 0, 0, 255),
+                Velocity = new Vector2(20, 0),
+                Width = 5
             });
 
             // TODO: Add a start button to do this (Also a stop button)
