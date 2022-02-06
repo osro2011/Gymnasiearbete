@@ -5,129 +5,83 @@
 			 xmlns:models="clr-namespace:Gymnasiearbete.Models"
              mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768"
              x:Class="Gymnasiearbete.Views.MainView">
-	<Grid ColumnDefinitions="*, 200">
-		<Canvas x:Name="MainCanvas"
-				Grid.Column="0"
-				Grid.Row="0"
-				Background="White">
-		</Canvas>
-		<Border BorderBrush="Black"
-				BorderThickness="2"
-				ZIndex="1"
-				Grid.Column="1"
-				Grid.Row="0">
-			<StackPanel Background="LightGray"
-						ZIndex="1">
-				<StackPanel.DataTemplates>
-					<!-- May be able to reuse PhysicsShape data markup as a DataTemplate or something -->
-					<DataTemplate DataType="{x:Type models:Rectangle}">
-						<StackPanel>
-							<TextBlock Text="Rectangle"></TextBlock>
-
-							<!-- Common -->
-
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Color: "></TextBlock>
-								<TextBlock Text="{Binding ColorString}"></TextBlock>
+	<UserControl.Resources>
+		<StackPanel x:Key="CommonDataPanel">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Color: "></TextBlock>
+				<TextBlock Text="{Binding ColorString}"></TextBlock>
+			</StackPanel>
+			<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
+				<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
+				<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
+				<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
+				<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
+				<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
+				<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
+				<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
+				<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
+				<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
+				<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
+				<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
+			</Grid>
+		</StackPanel>
+	</UserControl.Resources>
+		<Grid ColumnDefinitions="4*, *">
+			<Canvas x:Name="MainCanvas"
+					Grid.Column="0"
+					Grid.Row="0"
+					Background="White">
+			</Canvas>
+			<Border BorderBrush="Black"
+					BorderThickness="2"
+					ZIndex="1"
+					Grid.Column="1"
+					Grid.Row="0">
+				<StackPanel Background="LightGray"
+							ZIndex="1">
+					<StackPanel.DataTemplates>
+						<DataTemplate DataType="{x:Type models:Rectangle}">
+							<StackPanel>
+								<TextBlock Text="Rectangle"></TextBlock>
+								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
+								<Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
+									<TextBlock Text="Height: " Grid.Row="0" Grid.Column="0"></TextBlock>
+									<TextBlock Text="{Binding Height}" Grid.Row="0" Grid.Column="1"></TextBlock>
+									<TextBlock Text="Width: " Grid.Row="1" Grid.Column="0"></TextBlock>
+									<TextBlock Text="{Binding Width}" Grid.Row="1" Grid.Column="1"></TextBlock>
+								</Grid>
 							</StackPanel>
-							<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
-								<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
-								<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
-							</Grid>
-
-							<!-- End common -->
-
-							<Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
-								<TextBlock Text="Height: " Grid.Row="0" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding Height}" Grid.Row="0" Grid.Column="1"></TextBlock>
-								<TextBlock Text="Width: " Grid.Row="1" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding Width}" Grid.Row="1" Grid.Column="1"></TextBlock>
-							</Grid>
-						</StackPanel>
-					</DataTemplate>
-					<DataTemplate DataType="{x:Type models:Circle}">
-						<StackPanel>
-							<TextBlock Text="Circle"></TextBlock>
-							
-							<!-- Common -->
-							
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Color: "></TextBlock>
-								<TextBlock Text="{Binding ColorString}"></TextBlock>
+						</DataTemplate>
+						<DataTemplate DataType="{x:Type models:Circle}">
+							<StackPanel>
+								<TextBlock Text="Circle"></TextBlock>
+								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="Radius: "></TextBlock>
+									<TextBlock Text="{Binding Radius}"></TextBlock>
+								</StackPanel>
 							</StackPanel>
-							<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
-								<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
-								<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
-							</Grid>
-
-							<!-- End common -->
-
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Radius: "></TextBlock>
-								<TextBlock Text="{Binding Radius}"></TextBlock>
+						</DataTemplate>
+						<DataTemplate DataType="{x:Type models:Line}">
+							<StackPanel>
+								<TextBlock Text="Line"></TextBlock>
+								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="XOffset: "></TextBlock>
+									<TextBlock Text="{Binding XOffset}"></TextBlock>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="YOffset: "></TextBlock>
+									<TextBlock Text="{Binding YOffset}"></TextBlock>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="Width: "></TextBlock>
+									<TextBlock Text="{Binding Width}"></TextBlock>
+								</StackPanel>
 							</StackPanel>
-						</StackPanel>
-					</DataTemplate>
-					<DataTemplate DataType="{x:Type models:Line}">
-						<StackPanel>
-							<TextBlock Text="Line"></TextBlock>
-
-							<!-- Common -->
-
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Color: "></TextBlock>
-								<TextBlock Text="{Binding ColorString}"></TextBlock>
-							</StackPanel>
-							<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
-								<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
-								<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
-								<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
-								<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
-								<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
-							</Grid>
-
-							<!-- End common -->
-
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="XOffset: "></TextBlock>
-								<TextBlock Text="{Binding XOffset}"></TextBlock>
-							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="YOffset: "></TextBlock>
-								<TextBlock Text="{Binding YOffset}"></TextBlock>
-							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Width: "></TextBlock>
-								<TextBlock Text="{Binding Width}"></TextBlock>
-							</StackPanel>
-						</StackPanel>
-					</DataTemplate>
-				</StackPanel.DataTemplates>
-				<StackPanel.Children>
+						</DataTemplate>
+					</StackPanel.DataTemplates>
+					<StackPanel.Children>
 						<Button Command="{Binding DrawOnce}">Draw Shapes</Button>
 						<StackPanel Orientation="Horizontal">
 							<Button Command="{Binding Start}">Start</Button>
@@ -135,9 +89,8 @@
 						</StackPanel>
 						<TextBlock Name="Coords"></TextBlock>
 						<ContentControl Content="{Binding Selected}"></ContentControl>
-				</StackPanel.Children>
-			</StackPanel>
-		</Border>
-
-	</Grid>
+					</StackPanel.Children>
+				</StackPanel>
+			</Border>
+		</Grid>
 </UserControl>
