@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:models="clr-namespace:Gymnasiearbete.Models"
              mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768"
              x:Class="Gymnasiearbete.Views.MainView">
 	<Grid ColumnDefinitions="*, 200">
@@ -17,13 +18,58 @@
 				Grid.Row="0">
 			<StackPanel Background="LightGray"
 						ZIndex="1">
-				<Button Command="{Binding DrawOnce}">Draw Shapes</Button>
-				<StackPanel Orientation="Horizontal">
-					<Button Command="{Binding Start}">Start</Button>
-					<Button Command="{Binding Stop}">Stop</Button>
-				</StackPanel>
-				<TextBlock Name="Coords"></TextBlock>
+				<StackPanel.DataTemplates>
+					<DataTemplate DataType="{x:Type models:Rectangle}">
+						<StackPanel>
+							<TextBlock Text="Rectangle"></TextBlock>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="X: "></TextBlock>
+								<TextBlock Text="{Binding X}"></TextBlock>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Y: "></TextBlock>
+								<TextBlock Text="{Binding Y}"></TextBlock>
+							</StackPanel>
+						</StackPanel>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type models:Circle}">
+						<StackPanel>
+							<TextBlock Text="Circle"></TextBlock>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="X: "></TextBlock>
+								<TextBlock Text="{Binding X}"></TextBlock>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Y: "></TextBlock>
+								<TextBlock Text="{Binding Y}"></TextBlock>
+							</StackPanel>
+						</StackPanel>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type models:Line}">
+						<StackPanel>
+							<TextBlock Text="Line"></TextBlock>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="X: "></TextBlock>
+								<TextBlock Text="{Binding X}"></TextBlock>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Y: "></TextBlock>
+								<TextBlock Text="{Binding Y}"></TextBlock>
+							</StackPanel>
+						</StackPanel>
+					</DataTemplate>
+				</StackPanel.DataTemplates>
+				<StackPanel.Children>
+						<Button Command="{Binding DrawOnce}">Draw Shapes</Button>
+						<StackPanel Orientation="Horizontal">
+							<Button Command="{Binding Start}">Start</Button>
+							<Button Command="{Binding Stop}">Stop</Button>
+						</StackPanel>
+						<TextBlock Name="Coords"></TextBlock>
+						<ContentControl Content="{Binding Selected}"></ContentControl>
+					</StackPanel.Children>
 			</StackPanel>
 		</Border>
+
 	</Grid>
 </UserControl>

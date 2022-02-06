@@ -4,7 +4,7 @@ using Avalonia.Threading;
 using Gymnasiearbete.Models;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Reactive;
@@ -20,16 +20,28 @@ namespace Gymnasiearbete.ViewModels
 
         private long LastTimeElapsed = 0;
         private long CurrentTimeElapsed { get; set; }
-
-        public List<DrawablePhysicsObject> PhysicsShapes { get; set; }
+        public ObservableCollection<DrawablePhysicsObject> PhysicsShapes { get; set; }
+        DrawablePhysicsObject? _selected;
+        public DrawablePhysicsObject? Selected { 
+            get
+            {
+                return _selected;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selected, value);
+            }
+        }
 
         public ReactiveCommand<Unit, Unit> Start { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }
         public ReactiveCommand<Unit, Unit> DrawOnce { get; }
 
+        
+
         public MainViewModel()
         {
-            PhysicsShapes = new List<DrawablePhysicsObject>();
+            PhysicsShapes = new ObservableCollection<DrawablePhysicsObject>();
 
             PhysicsTickTimer.Tick += PhysicsTickTimer_Tick;
 
@@ -57,6 +69,8 @@ namespace Gymnasiearbete.ViewModels
                 Velocity = new Vector2(20, 0),
                 Width = 5
             });
+
+            Selected = PhysicsShapes[0];
 
             // TODO: Add a start button to do this (Also a stop button)
             Start = ReactiveCommand.Create(() => 

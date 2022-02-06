@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gymnasiearbete.Models
+﻿namespace Gymnasiearbete.Models
 {
     public class Circle : DrawablePhysicsObject
     {
-        public int Radius { get; set; }
+        int _radius;
+        public int Radius 
+        { 
+            get
+            {
+                return _radius;
+            } 
+            set
+            {
+                _radius = value;
+            }
+        }
     }
 }

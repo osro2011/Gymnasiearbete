@@ -1,6 +1,6 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Input;
 using Avalonia.Media;
 using Gymnasiearbete.Models;
 using Gymnasiearbete.ViewModels;
@@ -64,7 +64,6 @@ namespace Gymnasiearbete.Views
                             Width = Rectangle.Width,
                             ZIndex = 0
                         };
-                        MainCanvas.Children.Add(RectangleControl);
                         Canvas.SetLeft(RectangleControl, Rectangle.Position.X);
                         Canvas.SetTop(RectangleControl, Rectangle.Position.Y);
                         Rectangle.ControlShape = RectangleControl;
@@ -81,7 +80,6 @@ namespace Gymnasiearbete.Views
                             Width = Circle.Radius * 2,
                             ZIndex = 0
                         };
-                        MainCanvas.Children.Add(CircleControl);
                         Canvas.SetLeft(CircleControl, Circle.Position.X);
                         Canvas.SetTop(CircleControl, Circle.Position.Y);
                         Circle.ControlShape = CircleControl;
@@ -99,7 +97,6 @@ namespace Gymnasiearbete.Views
                             },
                             ZIndex = 0
                         };
-                        MainCanvas.Children.Add(LineControl);
                         Line.ControlShape = LineControl;
                         break;
 
@@ -109,6 +106,12 @@ namespace Gymnasiearbete.Views
                     default:
                         throw new Exception("Unknown shape");
                 }
+                MainCanvas.Children.Add(PhysicsShape.ControlShape);
+                PhysicsShape.ControlShape.Cursor = new Cursor(StandardCursorType.Hand);
+                PhysicsShape.ControlShape.PointerPressed += (s, args) =>
+                {
+                    _vm.Selected = PhysicsShape;
+                };
             }
         }
     }
