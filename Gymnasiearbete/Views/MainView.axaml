@@ -19,42 +19,110 @@
 			<StackPanel Background="LightGray"
 						ZIndex="1">
 				<StackPanel.DataTemplates>
+					<!-- May be able to reuse PhysicsShape data markup as a DataTemplate or something -->
 					<DataTemplate DataType="{x:Type models:Rectangle}">
 						<StackPanel>
 							<TextBlock Text="Rectangle"></TextBlock>
+
+							<!-- Common -->
+
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="X: "></TextBlock>
-								<TextBlock Text="{Binding X}"></TextBlock>
+								<TextBlock Text="Color: "></TextBlock>
+								<TextBlock Text="{Binding ColorString}"></TextBlock>
 							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Y: "></TextBlock>
-								<TextBlock Text="{Binding Y}"></TextBlock>
-							</StackPanel>
+							<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
+								<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
+								<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
+							</Grid>
+
+							<!-- End common -->
+
+							<Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
+								<TextBlock Text="Height: " Grid.Row="0" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding Height}" Grid.Row="0" Grid.Column="1"></TextBlock>
+								<TextBlock Text="Width: " Grid.Row="1" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding Width}" Grid.Row="1" Grid.Column="1"></TextBlock>
+							</Grid>
 						</StackPanel>
 					</DataTemplate>
 					<DataTemplate DataType="{x:Type models:Circle}">
 						<StackPanel>
 							<TextBlock Text="Circle"></TextBlock>
+							
+							<!-- Common -->
+							
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="X: "></TextBlock>
-								<TextBlock Text="{Binding X}"></TextBlock>
+								<TextBlock Text="Color: "></TextBlock>
+								<TextBlock Text="{Binding ColorString}"></TextBlock>
 							</StackPanel>
+							<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
+								<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
+								<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
+							</Grid>
+
+							<!-- End common -->
+
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Y: "></TextBlock>
-								<TextBlock Text="{Binding Y}"></TextBlock>
+								<TextBlock Text="Radius: "></TextBlock>
+								<TextBlock Text="{Binding Radius}"></TextBlock>
 							</StackPanel>
 						</StackPanel>
 					</DataTemplate>
 					<DataTemplate DataType="{x:Type models:Line}">
 						<StackPanel>
 							<TextBlock Text="Line"></TextBlock>
+
+							<!-- Common -->
+
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="X: "></TextBlock>
-								<TextBlock Text="{Binding X}"></TextBlock>
+								<TextBlock Text="Color: "></TextBlock>
+								<TextBlock Text="{Binding ColorString}"></TextBlock>
+							</StackPanel>
+							<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
+								<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
+								<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
+								<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
+								<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
+								<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
+							</Grid>
+
+							<!-- End common -->
+
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="XOffset: "></TextBlock>
+								<TextBlock Text="{Binding XOffset}"></TextBlock>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Y: "></TextBlock>
-								<TextBlock Text="{Binding Y}"></TextBlock>
+								<TextBlock Text="YOffset: "></TextBlock>
+								<TextBlock Text="{Binding YOffset}"></TextBlock>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Width: "></TextBlock>
+								<TextBlock Text="{Binding Width}"></TextBlock>
 							</StackPanel>
 						</StackPanel>
 					</DataTemplate>
@@ -67,7 +135,7 @@
 						</StackPanel>
 						<TextBlock Name="Coords"></TextBlock>
 						<ContentControl Content="{Binding Selected}"></ContentControl>
-					</StackPanel.Children>
+				</StackPanel.Children>
 			</StackPanel>
 		</Border>
 

@@ -52,7 +52,8 @@ namespace Gymnasiearbete.ViewModels
                 Width = 20,
                 Position = new Point(20, 20),
                 Color = new Color(255, 255, 0, 0),
-                Velocity = new Vector2(20, 0) // px/s
+                Velocity = new Vector2(20, 0), // px/s
+                Acceleration = new Vector2(1, 1)
             });
             PhysicsShapes.Add(new Circle()
             {
@@ -118,7 +119,7 @@ namespace Gymnasiearbete.ViewModels
                 double nextY = PhysicsShape.Position.Y;
 
                 // Change velocity
-                PhysicsShape.Velocity += PhysicsShape.Acceleration;
+                PhysicsShape.Velocity += PhysicsShape.Acceleration * DeltaTime / 1000;
 
                 // Set next position
                 nextX += PhysicsShape.Velocity.X * DeltaTime / 1000;

@@ -8,10 +8,11 @@ namespace Gymnasiearbete.Models
     public abstract class PhysicsObject : INotifyPropertyChanged
     {
         //TODO: Make conversions between pixels and meters.
-        Vector2 _acceleration;
-        Vector2 _velocity;
-        public int Mass { get; set; }
-        Point _position;
+        // Set fields and default values
+        Vector2 _acceleration = new Vector2(0, 0);
+        Vector2 _velocity = new Vector2(0, 0);
+        public int Mass { get; set; } = 0;
+        Point _position = new Point(0, 0);
 
         // Event for updating UI
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -60,18 +61,18 @@ namespace Gymnasiearbete.Models
                 NotifyPropertyChanged();
             }
         }
-        public float XVelocity
+        public int XVelocity
         { 
             get
             {
-                return _velocity.X;
+                return (int)_velocity.X;
             } 
         }
-        public float YVelocity
+        public int YVelocity
         {
             get
             {
-                return _velocity.Y;
+                return (int)_velocity.Y;
             }
         }
         public Vector2 Acceleration
@@ -84,6 +85,20 @@ namespace Gymnasiearbete.Models
             {
                 _acceleration = value;
                 NotifyPropertyChanged();
+            }
+        }
+        public int XAcceleration
+        {
+            get
+            {
+                return (int)_acceleration.X;
+            }
+        }
+        public int YAcceleration
+        {
+            get
+            {
+                return (int)_acceleration.Y;
             }
         }
     }
