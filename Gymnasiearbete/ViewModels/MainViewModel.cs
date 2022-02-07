@@ -36,7 +36,7 @@ namespace Gymnasiearbete.ViewModels
         public ReactiveCommand<Unit, Unit> Start { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }
         public ReactiveCommand<Unit, Unit> DrawOnce { get; }
-        public ReactiveCommand<Unit, Unit> SetValues { get; }
+
         bool _allowInput = true;
         public bool AllowInput
         {
@@ -112,11 +112,6 @@ namespace Gymnasiearbete.ViewModels
             DrawOnce = ReactiveCommand.Create(() =>
             {
                 DrawShapes?.Invoke(this, EventArgs.Empty);
-            });
-
-            SetValues = ReactiveCommand.Create(() =>
-            {
-                Selected.Position = new Point();
             });
         }
 
