@@ -36,6 +36,19 @@ namespace Gymnasiearbete.ViewModels
         public ReactiveCommand<Unit, Unit> Start { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }
         public ReactiveCommand<Unit, Unit> DrawOnce { get; }
+        public ReactiveCommand<Unit, Unit> SetValues { get; }
+        bool _allowInput = true;
+        public bool AllowInput
+        {
+            get
+            {
+                return _allowInput;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _allowInput, value);
+            }
+        }
 
         
 
@@ -82,6 +95,8 @@ namespace Gymnasiearbete.ViewModels
                 // Set FPS to 60 and start timer
                 PhysicsTickTimer.Interval = new TimeSpan(10000000 / 60);
                 PhysicsTickTimer.Start();
+
+                AllowInput = false;
             });
 
             Stop = ReactiveCommand.Create(() =>
@@ -90,11 +105,18 @@ namespace Gymnasiearbete.ViewModels
                 PhysicsTickTimer.Stop();
 
                 DeltaTimer.Stop();
+
+                AllowInput = true;
             });
 
             DrawOnce = ReactiveCommand.Create(() =>
             {
                 DrawShapes?.Invoke(this, EventArgs.Empty);
+            });
+
+            SetValues = ReactiveCommand.Create(() =>
+            {
+                Selected.Position = new Point();
             });
         }
 

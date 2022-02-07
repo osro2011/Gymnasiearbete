@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:models="clr-namespace:Gymnasiearbete.Models"
              mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768"
-             x:Class="Gymnasiearbete.Views.MainView">
+             x:Class="Gymnasiearbete.Views.MainView"
+			 x:Name="MainView">
 	<UserControl.Resources>
 		<StackPanel x:Key="CommonDataPanel">
 			<StackPanel Orientation="Horizontal">
@@ -12,17 +13,45 @@
 				<TextBlock Text="{Binding ColorString}"></TextBlock>
 			</StackPanel>
 			<Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
-				<TextBlock Text="X" Grid.Row="0" Grid.Column="1"></TextBlock>
-				<TextBlock Text="Y" Grid.Row="0" Grid.Column="2"></TextBlock>
-				<TextBlock Text="Position" Grid.Row="1" Grid.Column="0"></TextBlock>
-				<TextBlock Text="{Binding X}" Grid.Row="1" Grid.Column="1"></TextBlock>
-				<TextBlock Text="{Binding Y}" Grid.Row="1" Grid.Column="2"></TextBlock>
-				<TextBlock Text="Velocity" Grid.Row="2" Grid.Column="0"></TextBlock>
-				<TextBlock Text="{Binding XVelocity}" Grid.Row="2" Grid.Column="1"></TextBlock>
-				<TextBlock Text="{Binding YVelocity}" Grid.Row="2" Grid.Column="2"></TextBlock>
-				<TextBlock Text="Acceleration" Grid.Row="3" Grid.Column="0"></TextBlock>
-				<TextBlock Text="{Binding XAcceleration}" Grid.Row="3" Grid.Column="1"></TextBlock>
-				<TextBlock Text="{Binding YAcceleration}" Grid.Row="3" Grid.Column="2"></TextBlock>
+				<TextBlock Text="X" 
+						   Grid.Row="0" 
+						   Grid.Column="1"></TextBlock>
+				<TextBlock Text="Y" 
+						   Grid.Row="0" 
+						   Grid.Column="2"></TextBlock>
+				<TextBlock Text="Position" 
+						   Grid.Row="1" 
+						   Grid.Column="0"></TextBlock>
+				<TextBox Text="{Binding X, Mode=TwoWay}" 
+						 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"
+						 Grid.Row="1" 
+						 Grid.Column="1"></TextBox>
+				<TextBox Text="{Binding Y, Mode=TwoWay}" 
+						 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+						 Grid.Row="1" 
+						 Grid.Column="2"></TextBox>
+				<TextBlock Text="Velocity" 
+						   Grid.Row="2" 
+						   Grid.Column="0"></TextBlock>
+				<TextBox Text="{Binding XVelocity, Mode=TwoWay}" 
+						 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+						 Grid.Row="2" 
+						 Grid.Column="1"></TextBox>
+				<TextBox Text="{Binding YVelocity, Mode=TwoWay}" 
+						 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+						 Grid.Row="2" 
+						 Grid.Column="2"></TextBox>
+				<TextBlock Text="Acceleration" 
+						   Grid.Row="3" 
+						   Grid.Column="0"></TextBlock>
+				<TextBox Text="{Binding XAcceleration, Mode=TwoWay}" 
+						 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+						 Grid.Row="3" 
+						 Grid.Column="1"></TextBox>
+				<TextBox Text="{Binding YAcceleration, Mode=TwoWay}" 
+						 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+						 Grid.Row="3" 
+						 Grid.Column="2"></TextBox>
 			</Grid>
 		</StackPanel>
 	</UserControl.Resources>
@@ -44,11 +73,22 @@
 							<StackPanel>
 								<TextBlock Text="Rectangle"></TextBlock>
 								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
-								<Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
-									<TextBlock Text="Height: " Grid.Row="0" Grid.Column="0"></TextBlock>
-									<TextBlock Text="{Binding Height}" Grid.Row="0" Grid.Column="1"></TextBlock>
-									<TextBlock Text="Width: " Grid.Row="1" Grid.Column="0"></TextBlock>
-									<TextBlock Text="{Binding Width}" Grid.Row="1" Grid.Column="1"></TextBlock>
+								<Grid ColumnDefinitions="Auto, Auto" 
+									  RowDefinitions="Auto, Auto">
+									<TextBlock Text="Height: " 
+											   Grid.Row="0" 
+											   Grid.Column="0"></TextBlock>
+									<TextBox Text="{Binding Height}" 
+											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+											 Grid.Row="0" 
+											 Grid.Column="1"></TextBox>
+									<TextBlock Text="Width: " 
+											   Grid.Row="1" 
+											   Grid.Column="0"></TextBlock>
+									<TextBox Text="{Binding Width}" 
+											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+											 Grid.Row="1" 
+											 Grid.Column="1"></TextBox>
 								</Grid>
 							</StackPanel>
 						</DataTemplate>
@@ -58,7 +98,8 @@
 								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
 								<StackPanel Orientation="Horizontal">
 									<TextBlock Text="Radius: "></TextBlock>
-									<TextBlock Text="{Binding Radius}"></TextBlock>
+									<TextBox Text="{Binding Radius}" 
+											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
 								</StackPanel>
 							</StackPanel>
 						</DataTemplate>
@@ -68,15 +109,18 @@
 								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
 								<StackPanel Orientation="Horizontal">
 									<TextBlock Text="XOffset: "></TextBlock>
-									<TextBlock Text="{Binding XOffset}"></TextBlock>
+									<TextBox Text="{Binding XOffset}" 
+											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
 								</StackPanel>
 								<StackPanel Orientation="Horizontal">
 									<TextBlock Text="YOffset: "></TextBlock>
-									<TextBlock Text="{Binding YOffset}"></TextBlock>
+									<TextBox Text="{Binding YOffset}" 
+											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
 								</StackPanel>
 								<StackPanel Orientation="Horizontal">
 									<TextBlock Text="Width: "></TextBlock>
-									<TextBlock Text="{Binding Width}"></TextBlock>
+									<TextBox Text="{Binding Width}" 
+											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
 								</StackPanel>
 							</StackPanel>
 						</DataTemplate>

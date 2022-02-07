@@ -41,12 +41,20 @@ namespace Gymnasiearbete.Models
             {
                 return (int)_position.X;
             }
+            set
+            {
+                _position = new Point(value, _position.Y);
+            }
         }
         public int Y
         {
             get
             {
                 return (int)_position.Y;
+            }
+            set
+            {
+                _position = new Point(_position.X, value);
             }
         }
         public Vector2 Velocity
@@ -67,12 +75,20 @@ namespace Gymnasiearbete.Models
             {
                 return (int)_velocity.X;
             } 
+            set
+            {
+                _velocity.X = value;
+            }
         }
         public int YVelocity
         {
             get
             {
                 return (int)_velocity.Y;
+            }
+            set
+            {
+                _velocity.Y = value;
             }
         }
         public Vector2 Acceleration
@@ -93,12 +109,20 @@ namespace Gymnasiearbete.Models
             {
                 return (int)_acceleration.X;
             }
+            set
+            {
+                _acceleration.X = value;
+            }
         }
         public int YAcceleration
         {
             get
             {
                 return (int)_acceleration.Y;
+            }
+            set
+            {
+                _acceleration.Y = value;
             }
         }
     }
