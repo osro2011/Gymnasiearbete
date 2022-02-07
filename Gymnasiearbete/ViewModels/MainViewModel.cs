@@ -13,6 +13,7 @@ namespace Gymnasiearbete.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        // Physics timers, events and properties
         private DispatcherTimer PhysicsTickTimer = new DispatcherTimer();
         private Stopwatch DeltaTimer = new Stopwatch();
         public EventHandler? PhysicsTicked;
@@ -21,6 +22,8 @@ namespace Gymnasiearbete.ViewModels
         private long LastTimeElapsed = 0;
         private long CurrentTimeElapsed { get; set; }
         public ObservableCollection<DrawablePhysicsObject> PhysicsShapes { get; set; }
+
+        // UI Properties
         DrawablePhysicsObject? _selected;
         public DrawablePhysicsObject? Selected { 
             get
@@ -32,11 +35,6 @@ namespace Gymnasiearbete.ViewModels
                 this.RaiseAndSetIfChanged(ref _selected, value);
             }
         }
-
-        public ReactiveCommand<Unit, Unit> Start { get; }
-        public ReactiveCommand<Unit, Unit> Stop { get; }
-        public ReactiveCommand<Unit, Unit> DrawOnce { get; }
-        public ReactiveCommand<Unit, Unit> CreateNewShape { get; }
         public int SelectedShape { get; set; }
 
         bool _allowInput = true;
@@ -52,7 +50,11 @@ namespace Gymnasiearbete.ViewModels
             }
         }
 
-        
+        // Button commands
+        public ReactiveCommand<Unit, Unit> Start { get; }
+        public ReactiveCommand<Unit, Unit> Stop { get; }
+        public ReactiveCommand<Unit, Unit> DrawOnce { get; }
+        public ReactiveCommand<Unit, Unit> CreateNewShape { get; }
 
         public MainViewModel()
         {
@@ -60,7 +62,7 @@ namespace Gymnasiearbete.ViewModels
 
             PhysicsTickTimer.Tick += PhysicsTickTimer_Tick;
 
-            // Add test square
+            // Test shapes
             PhysicsShapes.Add(new Rectangle()
             {
                 Height = 20,
@@ -88,16 +90,17 @@ namespace Gymnasiearbete.ViewModels
 
             Selected = PhysicsShapes[0];
 
-            // TODO: Add a start button to do this (Also a stop button)
+            // Button commands implementations
             Start = ReactiveCommand.Create(() => 
             {
-                // Start Stopwatch for DeltaTime (Should be redundant since program is light but might as well)
+                // Start Stopwatch for DeltaTime
                 DeltaTimer.Start();
 
                 // Set FPS to 60 and start timer
                 PhysicsTickTimer.Interval = new TimeSpan(10000000 / 60);
                 PhysicsTickTimer.Start();
 
+                // Disable input while physics are running
                 AllowInput = false;
             });
 
@@ -108,6 +111,7 @@ namespace Gymnasiearbete.ViewModels
 
                 DeltaTimer.Stop();
 
+                // Enable input
                 AllowInput = true;
             });
 
@@ -118,6 +122,7 @@ namespace Gymnasiearbete.ViewModels
 
             CreateNewShape = ReactiveCommand.Create(() =>
             {
+                // Could make a base class of DrawablePhysicsObject with base settings, but I don't know the syntax nor do I feel like researching it
                 switch(SelectedShape) {
                     case 0:
                         Selected = new Rectangle()

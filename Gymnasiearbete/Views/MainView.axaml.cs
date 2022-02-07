@@ -18,16 +18,20 @@ namespace Gymnasiearbete.Views
         {
             InitializeComponent();
 
+            // Get main canvas
             MainCanvas = this.FindControl<Canvas>("MainCanvas");
 
+            // Update mouse coordinates
             MainCanvas.PointerMoved += (s, args) =>
             {
                 this.FindControl<TextBlock>("Coords").Text = args.GetCurrentPoint(MainCanvas).Position.ToString();
             };
 
+            // Set datacontext and viewmodel
             _vm = new MainViewModel();
             DataContext = _vm;
 
+            // Subscribe to events
             _vm.PhysicsTicked += (s, args) =>
             {
                 DrawShapes();
@@ -44,6 +48,7 @@ namespace Gymnasiearbete.Views
             AvaloniaXamlLoader.Load(this);
         }
 
+        // Draw the shapes in PhysicsShapes
         private void DrawShapes()
         {
             // Maybe switch to DrawingContext? If I can figure out how it works anyway.
@@ -107,6 +112,8 @@ namespace Gymnasiearbete.Views
                         throw new Exception("Unknown shape");
                 }
                 MainCanvas.Children.Add(PhysicsShape.ControlShape);
+
+                // Add click handling
                 PhysicsShape.ControlShape.Cursor = new Cursor(StandardCursorType.Hand);
                 PhysicsShape.ControlShape.PointerPressed += (s, args) =>
                 {

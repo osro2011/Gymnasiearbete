@@ -7,6 +7,7 @@
              x:Class="Gymnasiearbete.Views.MainView"
 			 x:Name="MainView">
 	<UserControl.Resources>
+		<!-- Define panel for displaying common info -->
 		<StackPanel x:Key="CommonDataPanel">
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="Color: "></TextBlock>
@@ -55,92 +56,100 @@
 			</Grid>
 		</StackPanel>
 	</UserControl.Resources>
-		<Grid ColumnDefinitions="4*, *">
-			<Canvas x:Name="MainCanvas"
-					Grid.Column="0"
-					Grid.Row="0"
-					Background="White">
-			</Canvas>
-			<Border BorderBrush="Black"
-					BorderThickness="2"
-					ZIndex="1"
-					Grid.Column="1"
-					Grid.Row="0">
-				<StackPanel Background="LightGray"
-							ZIndex="1">
-					<StackPanel.DataTemplates>
-						<DataTemplate DataType="{x:Type models:Rectangle}">
-							<StackPanel>
-								<TextBlock Text="Rectangle"></TextBlock>
-								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
-								<Grid ColumnDefinitions="Auto, Auto" 
-									  RowDefinitions="Auto, Auto">
-									<TextBlock Text="Height: " 
-											   Grid.Row="0" 
-											   Grid.Column="0"></TextBlock>
-									<TextBox Text="{Binding Height}" 
-											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
-											 Grid.Row="0" 
-											 Grid.Column="1"></TextBox>
-									<TextBlock Text="Width: " 
-											   Grid.Row="1" 
-											   Grid.Column="0"></TextBlock>
-									<TextBox Text="{Binding Width}" 
-											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
-											 Grid.Row="1" 
-											 Grid.Column="1"></TextBox>
-								</Grid>
-							</StackPanel>
-						</DataTemplate>
-						<DataTemplate DataType="{x:Type models:Circle}">
-							<StackPanel>
-								<TextBlock Text="Circle"></TextBlock>
-								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="Radius: "></TextBlock>
-									<TextBox Text="{Binding Radius}" 
-											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-								</StackPanel>
-							</StackPanel>
-						</DataTemplate>
-						<DataTemplate DataType="{x:Type models:Line}">
-							<StackPanel>
-								<TextBlock Text="Line"></TextBlock>
-								<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="XOffset: "></TextBlock>
-									<TextBox Text="{Binding XOffset}" 
-											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-								</StackPanel>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="YOffset: "></TextBlock>
-									<TextBox Text="{Binding YOffset}" 
-											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-								</StackPanel>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="Width: "></TextBlock>
-									<TextBox Text="{Binding Width}" 
-											 IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-								</StackPanel>
-							</StackPanel>
-						</DataTemplate>
-					</StackPanel.DataTemplates>
-					<StackPanel.Children>
-						<Button Command="{Binding DrawOnce}">Draw Shapes</Button>
-						<StackPanel Orientation="Horizontal">
-							<Button Command="{Binding Start}">Start</Button>
-							<Button Command="{Binding Stop}">Stop</Button>
+	<!-- Main grid -->
+	<Grid ColumnDefinitions="4*, *">
+		<!-- Main drawing canvas -->
+		<Canvas x:Name="MainCanvas"
+				Grid.Column="0"
+				Grid.Row="0"
+				Background="White">
+		</Canvas>
+		<!-- Menu -->
+		<Border BorderBrush="Black"
+				BorderThickness="2"
+				ZIndex="1"
+				Grid.Column="1"
+				Grid.Row="0">
+			<StackPanel Background="LightGray"
+						ZIndex="1">
+				<!-- Define diffrent data templates for different datatypes -->
+				<StackPanel.DataTemplates>
+					<DataTemplate DataType="{x:Type models:Rectangle}">
+						<StackPanel>
+							<TextBlock Text="Rectangle"></TextBlock>
+							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
+							<Grid ColumnDefinitions="Auto, Auto" 
+									RowDefinitions="Auto, Auto">
+								<TextBlock Text="Height: " 
+											Grid.Row="0" 
+											Grid.Column="0"></TextBlock>
+								<TextBox Text="{Binding Height}" 
+											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+											Grid.Row="0" 
+											Grid.Column="1"></TextBox>
+								<TextBlock Text="Width: " 
+											Grid.Row="1" 
+											Grid.Column="0"></TextBlock>
+								<TextBox Text="{Binding Width}" 
+											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}" 
+											Grid.Row="1" 
+											Grid.Column="1"></TextBox>
+							</Grid>
 						</StackPanel>
-						<TextBlock Name="Coords"></TextBlock>
-						<ComboBox SelectedIndex="{Binding SelectedShape}">
-							<ComboBoxItem>Rectangle</ComboBoxItem>
-							<ComboBoxItem>Circle</ComboBoxItem>
-							<ComboBoxItem>Line</ComboBoxItem>
-						</ComboBox>
-						<Button Command="{Binding CreateNewShape}" IsEnabled="{Binding AllowInput}">Create new shape</Button>
-						<ContentControl Content="{Binding Selected}"></ContentControl>
-					</StackPanel.Children>
-				</StackPanel>
-			</Border>
-		</Grid>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type models:Circle}">
+						<StackPanel>
+							<TextBlock Text="Circle"></TextBlock>
+							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Radius: "></TextBlock>
+								<TextBox Text="{Binding Radius}" 
+											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
+							</StackPanel>
+						</StackPanel>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type models:Line}">
+						<StackPanel>
+							<TextBlock Text="Line"></TextBlock>
+							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="XOffset: "></TextBlock>
+								<TextBox Text="{Binding XOffset}" 
+											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="YOffset: "></TextBlock>
+								<TextBox Text="{Binding YOffset}" 
+											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Width: "></TextBlock>
+								<TextBox Text="{Binding Width}" 
+											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
+							</StackPanel>
+						</StackPanel>
+					</DataTemplate>
+				</StackPanel.DataTemplates>
+				<StackPanel.Children>
+					<!-- Start/Stop buttons -->
+					<StackPanel Orientation="Horizontal">
+						<Button Command="{Binding Start}">Start</Button>
+						<Button Command="{Binding Stop}">Stop</Button>
+					</StackPanel>
+					<!-- Mouse coordinates -->
+					<TextBlock Name="Coords"></TextBlock>
+					<!-- Shape creation menu -->
+					<ComboBox SelectedIndex="{Binding SelectedShape}">
+						<ComboBoxItem>Rectangle</ComboBoxItem>
+						<ComboBoxItem>Circle</ComboBoxItem>
+						<ComboBoxItem>Line</ComboBoxItem>
+					</ComboBox>
+					<Button Command="{Binding CreateNewShape}" IsEnabled="{Binding AllowInput}">Create new shape</Button>
+					<!-- Edit shapes/display shape info menu -->
+					<ContentControl Content="{Binding Selected}"></ContentControl>
+					<Button Command="{Binding DrawOnce}">Draw Shapes</Button>
+				</StackPanel.Children>
+			</StackPanel>
+		</Border>
+	</Grid>
 </UserControl>
