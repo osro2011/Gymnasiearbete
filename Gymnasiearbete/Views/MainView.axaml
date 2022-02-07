@@ -132,6 +132,12 @@
 							<Button Command="{Binding Stop}">Stop</Button>
 						</StackPanel>
 						<TextBlock Name="Coords"></TextBlock>
+						<ComboBox SelectedIndex="{Binding SelectedShape}">
+							<ComboBoxItem>Rectangle</ComboBoxItem>
+							<ComboBoxItem>Circle</ComboBoxItem>
+							<ComboBoxItem>Line</ComboBoxItem>
+						</ComboBox>
+						<Button Command="{Binding CreateNewShape}" IsEnabled="{Binding AllowInput}">Create new shape</Button>
 						<ContentControl Content="{Binding Selected}"></ContentControl>
 					</StackPanel.Children>
 				</StackPanel>

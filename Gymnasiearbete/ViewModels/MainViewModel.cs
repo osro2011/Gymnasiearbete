@@ -36,6 +36,8 @@ namespace Gymnasiearbete.ViewModels
         public ReactiveCommand<Unit, Unit> Start { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }
         public ReactiveCommand<Unit, Unit> DrawOnce { get; }
+        public ReactiveCommand<Unit, Unit> CreateNewShape { get; }
+        public int SelectedShape { get; set; }
 
         bool _allowInput = true;
         public bool AllowInput
@@ -111,6 +113,49 @@ namespace Gymnasiearbete.ViewModels
 
             DrawOnce = ReactiveCommand.Create(() =>
             {
+                DrawShapes?.Invoke(this, EventArgs.Empty);
+            });
+
+            CreateNewShape = ReactiveCommand.Create(() =>
+            {
+                switch(SelectedShape) {
+                    case 0:
+                        Selected = new Rectangle()
+                        {
+                            Position = new Point(0, 0),
+                            Velocity = new Vector2(0, 0),
+                            Acceleration = new Vector2(0, 0),
+                            Mass = 0,
+                            Color = new Color(255, 255, 0, 0),
+                            Height = 20,
+                            Width = 20
+                        };
+                        break;
+                    case 1:
+                        Selected = new Circle()
+                        {
+                            Position = new Point(0, 0),
+                            Velocity = new Vector2(0, 0),
+                            Acceleration = new Vector2(0, 0),
+                            Mass = 0,
+                            Color = new Color(255, 255, 0, 0),
+                            Radius = 10
+                        };
+                        break;
+                    case 2:
+                        Selected = new Line()
+                        {
+                            Position = new Point(0, 0),
+                            Velocity = new Vector2(0, 0),
+                            Acceleration = new Vector2(0, 0),
+                            Mass = 0,
+                            Color = new Color(255, 255, 0, 0),
+                            Width = 2,
+                            Offset = new Point(20, 20)
+                        };
+                        break;
+                }
+                PhysicsShapes.Add(Selected);
                 DrawShapes?.Invoke(this, EventArgs.Empty);
             });
         }

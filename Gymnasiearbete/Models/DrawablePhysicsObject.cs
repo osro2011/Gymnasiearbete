@@ -5,7 +5,7 @@ namespace Gymnasiearbete.Models
 {
     public class DrawablePhysicsObject : PhysicsObject 
     {
-        public Shape ControlShape { get; set; }
+        public Shape? ControlShape { get; set; }
         Color _color;
         public Color Color {
             get
