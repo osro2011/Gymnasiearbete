@@ -2,7 +2,7 @@
 
 namespace Gymnasiearbete.Models
 {
-    public class Line : DrawablePhysicsObject
+    public class DrawableLine : DrawablePhysicsObject
     {
         public int Width { get; set; }
         Point _offset;

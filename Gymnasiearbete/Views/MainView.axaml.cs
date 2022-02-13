@@ -2,9 +2,11 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Gymnasiearbete.Models;
 using Gymnasiearbete.ViewModels;
 using System;
+using System.ComponentModel;
 
 namespace Gymnasiearbete.Views
 {
@@ -32,20 +34,32 @@ namespace Gymnasiearbete.Views
             DataContext = _vm;
 
             // Subscribe to events
-            _vm.PhysicsTicked += (s, args) =>
+            _vm.Engine.PhysicsTicked += (s, args) =>
             {
-                DrawShapes();
+                DrawShapesOnUIThread();
             };
 
             _vm.DrawShapes += (s, args) =>
             {
-                DrawShapes();
+                DrawShapesOnUIThread();
             };
         }
-
+        
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void DrawShapesOnUIThread()
+        {
+            if (!Dispatcher.UIThread.CheckAccess())
+            {
+                Dispatcher.UIThread.InvokeAsync(DrawShapes, DispatcherPriority.MinValue);
+            }
+            else
+            {
+                DrawShapes();
+            }
         }
 
         // Draw the shapes in PhysicsShapes
@@ -58,7 +72,7 @@ namespace Gymnasiearbete.Views
             {
                 switch (PhysicsShape)
                 {
-                    case Rectangle Rectangle:
+                    case DrawableRectangle Rectangle:
                         Avalonia.Controls.Shapes.Rectangle RectangleControl = new Avalonia.Controls.Shapes.Rectangle
                         {
                             Fill = new SolidColorBrush
@@ -74,7 +88,7 @@ namespace Gymnasiearbete.Views
                         Rectangle.ControlShape = RectangleControl;
                         break;
 
-                    case Circle Circle:
+                    case DrawableCircle Circle:
                         Avalonia.Controls.Shapes.Ellipse CircleControl = new Avalonia.Controls.Shapes.Ellipse
                         {
                             Fill = new SolidColorBrush
@@ -90,7 +104,7 @@ namespace Gymnasiearbete.Views
                         Circle.ControlShape = CircleControl;
                         break;
 
-                    case Line Line:
+                    case DrawableLine Line:
                         Avalonia.Controls.Shapes.Line LineControl = new Avalonia.Controls.Shapes.Line
                         {
                             StrokeThickness = Line.Width,
@@ -119,7 +133,8 @@ namespace Gymnasiearbete.Views
                 {
                     _vm.Selected = PhysicsShape;
                 };
-            }
+                
+    }
         }
     }
 }

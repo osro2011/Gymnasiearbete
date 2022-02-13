@@ -1,27 +1,42 @@
-﻿using Avalonia;
-using Avalonia.Media;
-using Avalonia.Threading;
+﻿using Avalonia.Media;
 using Gymnasiearbete.Models;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Numerics;
 using System.Reactive;
+using Engine;
+using System.Collections.Generic;
+using System.Linq;
+using Engine.Objects;
+using System.ComponentModel;
 
 namespace Gymnasiearbete.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        // Physics timers, events and properties
-        private DispatcherTimer PhysicsTickTimer = new DispatcherTimer();
-        private Stopwatch DeltaTimer = new Stopwatch();
-        public EventHandler? PhysicsTicked;
         public EventHandler? DrawShapes;
+        new public event PropertyChangedEventHandler? PropertyChanged;
 
-        private long LastTimeElapsed = 0;
-        private long CurrentTimeElapsed { get; set; }
-        public ObservableCollection<DrawablePhysicsObject> PhysicsShapes { get; set; }
+        public PhysicsEngine Engine;
+        ObservableCollection<DrawablePhysicsObject> _physicsShapes;
+        public ObservableCollection<DrawablePhysicsObject> PhysicsShapes 
+        {
+            get
+            {
+                return _physicsShapes;
+            }
+            set
+            {
+                _physicsShapes = value;
+                // This is not a great way of doing this and should probably be revised
+                // Unable to do this properly because values are changed in parent of DrawablePhysicsObject
+                foreach (DrawablePhysicsObject PhysicsShape in _physicsShapes)
+                {
+                    PhysicsShape.NotifyPropertyChanged();
+                }
+            }
+        }
 
         // UI Properties
         DrawablePhysicsObject? _selected;
@@ -60,29 +75,27 @@ namespace Gymnasiearbete.ViewModels
         {
             PhysicsShapes = new ObservableCollection<DrawablePhysicsObject>();
 
-            PhysicsTickTimer.Tick += PhysicsTickTimer_Tick;
-
             // Test shapes
-            PhysicsShapes.Add(new Rectangle()
+            PhysicsShapes.Add(new DrawableRectangle()
             {
                 Height = 20,
                 Width = 20,
-                Position = new Point(20, 20),
+                Position = new Avalonia.Point(20, 20),
                 Color = new Color(255, 255, 0, 0),
                 Velocity = new Vector2(20, 0), // px/s
-                Acceleration = new Vector2(1, 1)
+                Acceleration = new Vector2(0, 0)
             });
-            PhysicsShapes.Add(new Circle()
+            PhysicsShapes.Add(new DrawableCircle()
             {
                 Radius = 10,
-                Position = new Point(20, 50),
+                Position = new Avalonia.Point(20, 50),
                 Color = new Color(255, 0, 255, 0),
                 Velocity = new Vector2(20, 0)
             });
-            PhysicsShapes.Add(new Line()
+            PhysicsShapes.Add(new DrawableLine()
             {
-                Position = new Point(20, 80),
-                Offset = new Point(20, 20),
+                Position = new Avalonia.Point(20, 80),
+                Offset = new Avalonia.Point(20, 20),
                 Color = new Color(255, 0, 0, 255),
                 Velocity = new Vector2(20, 0),
                 Width = 5
@@ -90,27 +103,26 @@ namespace Gymnasiearbete.ViewModels
 
             Selected = PhysicsShapes[0];
 
+            Engine = new PhysicsEngine();
+
+            Engine.PhysicsObjects = new List<PhysicsObject>(PhysicsShapes);
+
+            Engine.PhysicsTicked += (s, args) =>
+            {
+                PhysicsShapes = new ObservableCollection<DrawablePhysicsObject>(Engine.PhysicsObjects.Cast<DrawablePhysicsObject>().ToList());
+            };
+
             // Button commands implementations
             Start = ReactiveCommand.Create(() => 
             {
-                // Start Stopwatch for DeltaTime
-                DeltaTimer.Start();
-
-                // Set FPS to 60 and start timer
-                PhysicsTickTimer.Interval = new TimeSpan(10000000 / 60);
-                PhysicsTickTimer.Start();
-
+                Engine.Start();
                 // Disable input while physics are running
                 AllowInput = false;
             });
 
             Stop = ReactiveCommand.Create(() =>
             {
-                // Stop all timers
-                PhysicsTickTimer.Stop();
-
-                DeltaTimer.Stop();
-
+                Engine.Stop();
                 // Enable input
                 AllowInput = true;
             });
@@ -125,9 +137,9 @@ namespace Gymnasiearbete.ViewModels
                 // Could make a base class of DrawablePhysicsObject with base settings, but I don't know the syntax nor do I feel like researching it
                 switch(SelectedShape) {
                     case 0:
-                        Selected = new Rectangle()
+                        Selected = new DrawableRectangle()
                         {
-                            Position = new Point(0, 0),
+                            Position = new Avalonia.Point(0, 0),
                             Velocity = new Vector2(0, 0),
                             Acceleration = new Vector2(0, 0),
                             Mass = 0,
@@ -137,9 +149,9 @@ namespace Gymnasiearbete.ViewModels
                         };
                         break;
                     case 1:
-                        Selected = new Circle()
+                        Selected = new DrawableCircle()
                         {
-                            Position = new Point(0, 0),
+                            Position = new Avalonia.Point(0, 0),
                             Velocity = new Vector2(0, 0),
                             Acceleration = new Vector2(0, 0),
                             Mass = 0,
@@ -148,53 +160,21 @@ namespace Gymnasiearbete.ViewModels
                         };
                         break;
                     case 2:
-                        Selected = new Line()
+                        Selected = new DrawableLine()
                         {
-                            Position = new Point(0, 0),
+                            Position = new Avalonia.Point(0, 0),
                             Velocity = new Vector2(0, 0),
                             Acceleration = new Vector2(0, 0),
                             Mass = 0,
                             Color = new Color(255, 255, 0, 0),
                             Width = 2,
-                            Offset = new Point(20, 20)
+                            Offset = new Avalonia.Point(20, 20)
                         };
                         break;
                 }
                 PhysicsShapes.Add(Selected);
                 DrawShapes?.Invoke(this, EventArgs.Empty);
             });
-        }
-
-        private void PhysicsTickTimer_Tick(object? sender, EventArgs e)
-        {
-            MoveShapes();
-
-            PhysicsTicked?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void MoveShapes()
-        {
-            // Set up delta time
-            CurrentTimeElapsed = DeltaTimer.ElapsedMilliseconds;
-            long DeltaTime = CurrentTimeElapsed - LastTimeElapsed;
-            LastTimeElapsed = CurrentTimeElapsed;
-
-            // Loop through each physics object
-            foreach (PhysicsObject PhysicsShape in PhysicsShapes)
-            {
-                double nextX = PhysicsShape.Position.X;
-                double nextY = PhysicsShape.Position.Y;
-
-                // Change velocity
-                PhysicsShape.Velocity += PhysicsShape.Acceleration * DeltaTime / 1000;
-
-                // Set next position
-                nextX += PhysicsShape.Velocity.X * DeltaTime / 1000;
-                nextY += PhysicsShape.Velocity.Y * DeltaTime / 1000;
-
-                // Change position
-                PhysicsShape.Position = new Point(nextX, nextY);
-            }
         }
     }
 }

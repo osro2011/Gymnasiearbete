@@ -74,7 +74,7 @@
 						ZIndex="1">
 				<!-- Define diffrent data templates for different datatypes -->
 				<StackPanel.DataTemplates>
-					<DataTemplate DataType="{x:Type models:Rectangle}">
+					<DataTemplate DataType="{x:Type models:DrawableRectangle}">
 						<StackPanel>
 							<TextBlock Text="Rectangle"></TextBlock>
 							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
@@ -97,7 +97,7 @@
 							</Grid>
 						</StackPanel>
 					</DataTemplate>
-					<DataTemplate DataType="{x:Type models:Circle}">
+					<DataTemplate DataType="{x:Type models:DrawableCircle}">
 						<StackPanel>
 							<TextBlock Text="Circle"></TextBlock>
 							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
@@ -108,7 +108,7 @@
 							</StackPanel>
 						</StackPanel>
 					</DataTemplate>
-					<DataTemplate DataType="{x:Type models:Line}">
+					<DataTemplate DataType="{x:Type models:DrawableLine}">
 						<StackPanel>
 							<TextBlock Text="Line"></TextBlock>
 							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>

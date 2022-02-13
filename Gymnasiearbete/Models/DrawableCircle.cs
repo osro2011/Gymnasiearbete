@@ -1,6 +1,8 @@
-﻿namespace Gymnasiearbete.Models
+﻿using Engine.Objects;
+
+namespace Gymnasiearbete.Models
 {
-    public class Circle : DrawablePhysicsObject
+    public class DrawableCircle : DrawablePhysicsObject, ICircle
     {
         int _radius;
         public int Radius 
