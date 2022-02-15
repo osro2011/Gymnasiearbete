@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Objects;
 using System.ComponentModel;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Gymnasiearbete.ViewModels
 {
@@ -64,10 +66,16 @@ namespace Gymnasiearbete.ViewModels
                 this.RaiseAndSetIfChanged(ref _allowInput, value);
             }
         }
+        private JsonSerializerSettings JsonSettings { get; } = new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.Objects
+        };
 
         // Button commands
         public ReactiveCommand<Unit, Unit> Start { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }
+        public ReactiveCommand<Unit, Unit> Save { get; }
+        public ReactiveCommand<Unit, Unit> Open { get; }
         public ReactiveCommand<Unit, Unit> DrawOnce { get; }
         public ReactiveCommand<Unit, Unit> CreateNewShape { get; }
 
@@ -125,6 +133,18 @@ namespace Gymnasiearbete.ViewModels
                 Engine.Stop();
                 // Enable input
                 AllowInput = true;
+            });
+
+            Save = ReactiveCommand.Create(() => 
+            {
+                string Json = JsonConvert.SerializeObject(PhysicsShapes, JsonSettings);
+                File.WriteAllText("./objects.json", Json);
+            });
+
+            Open = ReactiveCommand.Create(() =>
+            {
+                PhysicsShapes = JsonConvert.DeserializeObject<ObservableCollection<DrawablePhysicsObject>>(File.ReadAllText("./objects.json"), JsonSettings);
+                Engine.PhysicsObjects = new List<PhysicsObject>(PhysicsShapes);
             });
 
             DrawOnce = ReactiveCommand.Create(() =>

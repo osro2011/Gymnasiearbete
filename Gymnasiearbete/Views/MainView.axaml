@@ -136,6 +136,10 @@
 						<Button Command="{Binding Start}">Start</Button>
 						<Button Command="{Binding Stop}">Stop</Button>
 					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Button Command="{Binding Save}">Save</Button>
+						<Button Command="{Binding Open}">Open</Button>
+					</StackPanel>
 					<!-- Mouse coordinates -->
 					<TextBlock Name="Coords"></TextBlock>
 					<!-- Shape creation menu -->
