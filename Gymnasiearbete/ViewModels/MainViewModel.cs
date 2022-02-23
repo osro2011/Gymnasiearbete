@@ -18,11 +18,9 @@ namespace Gymnasiearbete.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public EventHandler? DrawShapes;
-        new public event PropertyChangedEventHandler? PropertyChanged;
-
         public PhysicsEngine Engine;
-        ObservableCollection<DrawablePhysicsObject> _physicsShapes;
-        public ObservableCollection<DrawablePhysicsObject> PhysicsShapes 
+        ObservableCollection<PhysicsObject>? _physicsShapes;
+        public ObservableCollection<PhysicsObject>? PhysicsShapes 
         {
             get
             {
@@ -31,18 +29,12 @@ namespace Gymnasiearbete.ViewModels
             set
             {
                 _physicsShapes = value;
-                // This is not a great way of doing this and should probably be revised
-                // Unable to do this properly because values are changed in parent of DrawablePhysicsObject
-                foreach (DrawablePhysicsObject PhysicsShape in _physicsShapes)
-                {
-                    PhysicsShape.NotifyPropertyChanged();
-                }
             }
         }
 
         // UI Properties
-        DrawablePhysicsObject? _selected;
-        public DrawablePhysicsObject? Selected { 
+        IDrawable? _selected;
+        public IDrawable? Selected { 
             get
             {
                 return _selected;
@@ -81,35 +73,27 @@ namespace Gymnasiearbete.ViewModels
 
         public MainViewModel()
         {
-            PhysicsShapes = new ObservableCollection<DrawablePhysicsObject>();
-
-            // Test shapes
+            PhysicsShapes = new ObservableCollection<PhysicsObject>();
             PhysicsShapes.Add(new DrawableRectangle()
             {
                 Height = 20,
                 Width = 20,
-                Position = new Avalonia.Point(20, 20),
+                Position = new Avalonia.Point(50, 50),
                 Color = new Color(255, 255, 0, 0),
-                Velocity = new Vector2(20, 0), // px/s
-                Acceleration = new Vector2(0, 0)
+                Velocity = new Vector2(0, 0), // px/s
+                Acceleration = new Vector2(0, 0),
+                Mass = 20
             });
-            PhysicsShapes.Add(new DrawableCircle()
+            PhysicsShapes.Add(new DrawableRectangle()
             {
-                Radius = 10,
-                Position = new Avalonia.Point(20, 50),
-                Color = new Color(255, 0, 255, 0),
-                Velocity = new Vector2(20, 0)
+                Height = 20,
+                Width = 20,
+                Position = new Avalonia.Point(90, 50),
+                Color = new Color(255, 255, 0, 0),
+                Velocity = new Vector2(-20, 0), // px/s
+                Acceleration = new Vector2(0, 0),
+                Mass = 10
             });
-            PhysicsShapes.Add(new DrawableLine()
-            {
-                Position = new Avalonia.Point(20, 80),
-                Offset = new Avalonia.Point(20, 20),
-                Color = new Color(255, 0, 0, 255),
-                Velocity = new Vector2(20, 0),
-                Width = 5
-            });
-
-            Selected = PhysicsShapes[0];
 
             Engine = new PhysicsEngine();
 
@@ -117,7 +101,7 @@ namespace Gymnasiearbete.ViewModels
 
             Engine.PhysicsTicked += (s, args) =>
             {
-                PhysicsShapes = new ObservableCollection<DrawablePhysicsObject>(Engine.PhysicsObjects.Cast<DrawablePhysicsObject>().ToList());
+                PhysicsShapes = new ObservableCollection<PhysicsObject>(Engine.PhysicsObjects);
             };
 
             // Button commands implementations
@@ -137,14 +121,19 @@ namespace Gymnasiearbete.ViewModels
 
             Save = ReactiveCommand.Create(() => 
             {
+                //foreach (PhysicsObject PhysicsShape in PhysicsShapes)
+                //{
+                //    PhysicsShape.ControlShape = null;
+                //}
                 string Json = JsonConvert.SerializeObject(PhysicsShapes, JsonSettings);
                 File.WriteAllText("./objects.json", Json);
             });
 
             Open = ReactiveCommand.Create(() =>
             {
-                PhysicsShapes = JsonConvert.DeserializeObject<ObservableCollection<DrawablePhysicsObject>>(File.ReadAllText("./objects.json"), JsonSettings);
+                PhysicsShapes = JsonConvert.DeserializeObject<ObservableCollection<PhysicsObject>>(File.ReadAllText("./objects.json"), JsonSettings);
                 Engine.PhysicsObjects = new List<PhysicsObject>(PhysicsShapes);
+                DrawShapes?.Invoke(this, EventArgs.Empty);
             });
 
             DrawOnce = ReactiveCommand.Create(() =>
@@ -179,20 +168,10 @@ namespace Gymnasiearbete.ViewModels
                             Radius = 10
                         };
                         break;
-                    case 2:
-                        Selected = new DrawableLine()
-                        {
-                            Position = new Avalonia.Point(0, 0),
-                            Velocity = new Vector2(0, 0),
-                            Acceleration = new Vector2(0, 0),
-                            Mass = 0,
-                            Color = new Color(255, 255, 0, 0),
-                            Width = 2,
-                            Offset = new Avalonia.Point(20, 20)
-                        };
-                        break;
+                    default:
+                        throw new Exception();
                 }
-                PhysicsShapes.Add(Selected);
+                PhysicsShapes.Add((PhysicsObject)Selected);
                 DrawShapes?.Invoke(this, EventArgs.Empty);
             });
         }

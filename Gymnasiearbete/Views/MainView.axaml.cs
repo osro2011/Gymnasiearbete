@@ -7,6 +7,8 @@ using Gymnasiearbete.Models;
 using Gymnasiearbete.ViewModels;
 using System;
 using System.ComponentModel;
+using Engine.Objects;
+using Avalonia.Controls.Shapes;
 
 namespace Gymnasiearbete.Views
 {
@@ -68,73 +70,61 @@ namespace Gymnasiearbete.Views
             // Maybe switch to DrawingContext? If I can figure out how it works anyway.
             MainCanvas.Children.Clear();
             
-            foreach (DrawablePhysicsObject PhysicsShape in _vm.PhysicsShapes)
+            foreach (PhysicsObject PhysicsShape in _vm.PhysicsShapes)
             {
-                switch (PhysicsShape)
+                if (PhysicsShape is IDrawable)
                 {
-                    case DrawableRectangle Rectangle:
-                        Avalonia.Controls.Shapes.Rectangle RectangleControl = new Avalonia.Controls.Shapes.Rectangle
-                        {
-                            Fill = new SolidColorBrush
+                    Shape ControlShape;
+                    switch (PhysicsShape)
+                    {
+                        case DrawableRectangle Rectangle:
+                            Avalonia.Controls.Shapes.Rectangle RectangleControl = new Avalonia.Controls.Shapes.Rectangle
                             {
-                                Color = Rectangle.Color
-                            },
-                            Height = Rectangle.Height,
-                            Width = Rectangle.Width,
-                            ZIndex = 0
-                        };
-                        Canvas.SetLeft(RectangleControl, Rectangle.Position.X);
-                        Canvas.SetTop(RectangleControl, Rectangle.Position.Y);
-                        Rectangle.ControlShape = RectangleControl;
-                        break;
+                                Fill = new SolidColorBrush
+                                {
+                                    Color = Rectangle.Color
+                                },
+                                Height = Rectangle.Height,
+                                Width = Rectangle.Width,
+                                ZIndex = 0
+                            };
+                            Canvas.SetLeft(RectangleControl, Rectangle.Position.X);
+                            Canvas.SetTop(RectangleControl, Rectangle.Position.Y);
+                            ControlShape = RectangleControl;
+                            break;
 
-                    case DrawableCircle Circle:
-                        Avalonia.Controls.Shapes.Ellipse CircleControl = new Avalonia.Controls.Shapes.Ellipse
-                        {
-                            Fill = new SolidColorBrush
+                        case DrawableCircle Circle:
+                            Avalonia.Controls.Shapes.Ellipse CircleControl = new Avalonia.Controls.Shapes.Ellipse
                             {
-                                Color = Circle.Color
-                            },
-                            Height = Circle.Radius * 2,
-                            Width = Circle.Radius * 2,
-                            ZIndex = 0
-                        };
-                        Canvas.SetLeft(CircleControl, Circle.Position.X);
-                        Canvas.SetTop(CircleControl, Circle.Position.Y);
-                        Circle.ControlShape = CircleControl;
-                        break;
+                                Fill = new SolidColorBrush
+                                {
+                                    Color = Circle.Color
+                                },
+                                Height = Circle.Radius * 2,
+                                Width = Circle.Radius * 2,
+                                ZIndex = 0
+                            };
+                            Canvas.SetLeft(CircleControl, Circle.Position.X);
+                            Canvas.SetTop(CircleControl, Circle.Position.Y);
+                            ControlShape = CircleControl;
+                            break;
 
-                    case DrawableLine Line:
-                        Avalonia.Controls.Shapes.Line LineControl = new Avalonia.Controls.Shapes.Line
-                        {
-                            StrokeThickness = Line.Width,
-                            StartPoint = Line.Position,
-                            EndPoint = Line.Position + Line.Offset,
-                            Stroke = new SolidColorBrush()
-                            {
-                                Color = Line.Color
-                            },
-                            ZIndex = 0
-                        };
-                        Line.ControlShape = LineControl;
-                        break;
+                        case null:
+                            throw new NullReferenceException();
 
-                    case null:
-                        throw new NullReferenceException();
+                        default:
+                            throw new Exception("Unknown shape");
+                    }
+                    MainCanvas.Children.Add(ControlShape);
 
-                    default:
-                        throw new Exception("Unknown shape");
+                    // Add click handling
+                    ControlShape.Cursor = new Cursor(StandardCursorType.Hand);
+                    ControlShape.PointerPressed += (s, args) =>
+                    {
+                        _vm.Selected = (IDrawable)PhysicsShape;
+                    };
                 }
-                MainCanvas.Children.Add(PhysicsShape.ControlShape);
-
-                // Add click handling
-                PhysicsShape.ControlShape.Cursor = new Cursor(StandardCursorType.Hand);
-                PhysicsShape.ControlShape.PointerPressed += (s, args) =>
-                {
-                    _vm.Selected = PhysicsShape;
-                };
-                
-    }
+            }
         }
     }
 }

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Objects
 {
-    public class Rectangle : PhysicsObject, IRectangle
+    public class Rectangle : PhysicsObject
     {
-        public int Height { get; set; }
-        public int Width { get; set; }
-        public float Angle { get; set; }
+        virtual public int Height { get; set; }
+        virtual public int Width { get; set; }
     }
 }

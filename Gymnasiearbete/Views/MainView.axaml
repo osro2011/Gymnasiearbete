@@ -108,27 +108,6 @@
 							</StackPanel>
 						</StackPanel>
 					</DataTemplate>
-					<DataTemplate DataType="{x:Type models:DrawableLine}">
-						<StackPanel>
-							<TextBlock Text="Line"></TextBlock>
-							<ContentControl Content="{DynamicResource CommonDataPanel}"></ContentControl>
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="XOffset: "></TextBlock>
-								<TextBox Text="{Binding XOffset}" 
-											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="YOffset: "></TextBlock>
-								<TextBox Text="{Binding YOffset}" 
-											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Width: "></TextBlock>
-								<TextBox Text="{Binding Width}" 
-											IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"></TextBox>
-							</StackPanel>
-						</StackPanel>
-					</DataTemplate>
 				</StackPanel.DataTemplates>
 				<StackPanel.Children>
 					<!-- Start/Stop buttons -->

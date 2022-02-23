@@ -11,7 +11,7 @@ namespace Engine
     {
         private Timer PhysicsTickTimer = new Timer();
         private Stopwatch DeltaTimer = new Stopwatch();
-        public EventHandler? PhysicsTicked;
+        public EventHandler PhysicsTicked;
 
         private long LastTimeElapsed = 0;
         private long CurrentTimeElapsed { get; set; }
@@ -53,7 +53,7 @@ namespace Engine
             long DeltaTime = CurrentTimeElapsed - LastTimeElapsed;
             LastTimeElapsed = CurrentTimeElapsed;
 
-            // Loop through each physics object
+            // Move all shapes
             foreach (PhysicsObject PhysicsObject in PhysicsObjects)
             {
                 double nextX = PhysicsObject.Position.X;
@@ -68,6 +68,39 @@ namespace Engine
 
                 // Change position
                 PhysicsObject.Position = new Point(nextX, nextY);
+            }
+
+            // Check for collisions
+            foreach (PhysicsObject PhysicsObject in PhysicsObjects)
+            {
+                foreach (PhysicsObject CollisionObject in PhysicsObjects)
+                {
+                    if (CollisionObject != PhysicsObject)
+                    {
+                        if (CollisionObject is Rectangle && PhysicsObject is Rectangle)
+                        {
+                            // Cast general physics classes to specific rectangle class
+                            Rectangle PhysicsRectangle = (Rectangle)PhysicsObject;
+                            Rectangle CollisionRectangle = (Rectangle)CollisionObject;
+                            if (PhysicsRectangle.Position.X + PhysicsRectangle.Width >= CollisionRectangle.Position.X &&
+                                PhysicsRectangle.Position.X <= CollisionRectangle.Position.X + CollisionRectangle.Width &&
+                                PhysicsRectangle.Position.Y + PhysicsRectangle.Height >= CollisionRectangle.Position.Y &&
+                                PhysicsRectangle.Position.Y <= CollisionRectangle.Position.Y + CollisionRectangle.Height)
+                            {
+                                // Collision between PhysicsRectangle and CollisionRectangle
+                                PhysicsRectangle.Position.X = 500;
+                            }
+                        }
+                        else if (CollisionObject is Circle && PhysicsObject is Circle)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                }
             }
         }
     }

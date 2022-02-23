@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Engine.Objects
 {
-    public abstract class PhysicsObject
+    // Everything relating to the physics should go in here
+    public abstract class PhysicsObject: IPhysicsObject
     {
+        protected List<Vector2> _forces = new List<Vector2>();
         protected Point _position = new Point(0, 0);
         protected Vector2 _velocity = new Vector2(0, 0);
         protected Vector2 _acceleration = new Vector2(0, 0);
@@ -16,7 +14,18 @@ namespace Engine.Objects
 
         //TODO: Make conversions between pixels and meters.
         // Set properties
-        public Point Position 
+        public List<Vector2> Forces
+        {
+            get
+            {
+                return _forces;
+            }
+            set
+            {
+                _forces = value;
+            }
+        }
+        virtual public Point Position 
         { 
             get 
             {
@@ -26,8 +35,8 @@ namespace Engine.Objects
             {
                 _position = value;
             }
-        } 
-        public Vector2 Velocity
+        }
+        virtual public Vector2 Velocity
         {
             get
             {
@@ -38,7 +47,7 @@ namespace Engine.Objects
                 _velocity = value;
             }
         }
-        public Vector2 Acceleration
+        virtual public Vector2 Acceleration
         {
             get
             {
@@ -49,7 +58,7 @@ namespace Engine.Objects
                 _acceleration = value;
             }
         }
-        public int Mass
+        virtual public int Mass
         {
             get
             {
@@ -59,6 +68,22 @@ namespace Engine.Objects
             {
                 _mass = value;
             }
+        }
+
+        
+        public Vector2 GetMomentum()
+        {
+            return Mass * Velocity;
+        }
+
+        public void AddImpulse(Vector2 Impulse)
+        {
+            Velocity += (Impulse / Mass);
+        }
+
+        public void AddForce(Vector2 Force)
+        {
+            Forces.Add(Force);
         }
     }
 }

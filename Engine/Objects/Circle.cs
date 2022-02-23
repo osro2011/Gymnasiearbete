@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Objects
 {
-    class Circle : PhysicsObject, ICircle
+    public class Circle : PhysicsObject
     {
-        public int Radius { get; set; }
+        virtual public int Radius { get; set; }
     }
 }
