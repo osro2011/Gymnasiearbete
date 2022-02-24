@@ -70,7 +70,7 @@ namespace Gymnasiearbete.Views
             // Maybe switch to DrawingContext? If I can figure out how it works anyway.
             MainCanvas.Children.Clear();
             
-            foreach (PhysicsObject PhysicsShape in _vm.PhysicsShapes)
+            foreach (IDrawable PhysicsShape in _vm.PhysicsShapes)
             {
                 if (PhysicsShape is IDrawable)
                 {
@@ -121,7 +121,7 @@ namespace Gymnasiearbete.Views
                     ControlShape.Cursor = new Cursor(StandardCursorType.Hand);
                     ControlShape.PointerPressed += (s, args) =>
                     {
-                        _vm.Selected = (IDrawable)PhysicsShape;
+                        _vm.Selected = PhysicsShape;
                     };
                 }
             }

@@ -80,7 +80,7 @@ namespace Gymnasiearbete.ViewModels
                 Width = 20,
                 Position = new Avalonia.Point(50, 50),
                 Color = new Color(255, 255, 0, 0),
-                Velocity = new Vector2(0, 0), // px/s
+                Velocity = new Vector2(20, 20), // px/s
                 Acceleration = new Vector2(0, 0),
                 Mass = 20
             });
@@ -88,11 +88,11 @@ namespace Gymnasiearbete.ViewModels
             {
                 Height = 20,
                 Width = 20,
-                Position = new Avalonia.Point(90, 50),
+                Position = new Avalonia.Point(90, 90),
                 Color = new Color(255, 255, 0, 0),
-                Velocity = new Vector2(-20, 0), // px/s
+                Velocity = new Vector2(0, 0), // px/s
                 Acceleration = new Vector2(0, 0),
-                Mass = 10
+                Mass = 30
             });
 
             Engine = new PhysicsEngine();

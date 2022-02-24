@@ -6,23 +6,24 @@ namespace Engine.Objects
     // Everything relating to the physics should go in here
     public abstract class PhysicsObject: IPhysicsObject
     {
-        protected List<Vector2> _forces = new List<Vector2>();
-        protected Point _position = new Point(0, 0);
-        protected Vector2 _velocity = new Vector2(0, 0);
-        protected Vector2 _acceleration = new Vector2(0, 0);
-        protected int _mass = 0;
+        private Vector2 _resultantForce = new Vector2(0, 0);
+        private Point _position = new Point(0, 0);
+        private Vector2 _velocity = new Vector2(0, 0);
+        private Vector2 _acceleration = new Vector2(0, 0);
+        private int _mass = 0;
 
         //TODO: Make conversions between pixels and meters.
         // Set properties
-        public List<Vector2> Forces
+        public List<PhysicsObject> Ignore { get; set; } = new List<PhysicsObject>(); // Objects to not interact with (Just collisions for now)
+        public Vector2 ResultantForce
         {
             get
             {
-                return _forces;
+                return _resultantForce;
             }
             set
             {
-                _forces = value;
+                _resultantForce = value;
             }
         }
         virtual public Point Position 
@@ -76,14 +77,9 @@ namespace Engine.Objects
             return Mass * Velocity;
         }
 
-        public void AddImpulse(Vector2 Impulse)
-        {
-            Velocity += (Impulse / Mass);
-        }
-
         public void AddForce(Vector2 Force)
         {
-            Forces.Add(Force);
+            ResultantForce += Force;
         }
     }
 }
