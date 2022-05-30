@@ -7,9 +7,7 @@ using System.Numerics;
 using System.Reactive;
 using Engine;
 using System.Collections.Generic;
-using System.Linq;
 using Engine.Objects;
-using System.ComponentModel;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -24,6 +22,7 @@ namespace Gymnasiearbete.ViewModels
         {
             get
             {
+                
                 return _physicsShapes;
             }
             set
@@ -76,18 +75,17 @@ namespace Gymnasiearbete.ViewModels
             PhysicsShapes = new ObservableCollection<PhysicsObject>();
             PhysicsShapes.Add(new DrawableRectangle()
             {
-                Height = 20,
                 Width = 20,
+                Height = 20,
                 Position = new Avalonia.Point(50, 50),
                 Color = new Color(255, 255, 0, 0),
                 Velocity = new Vector2(20, 20), // px/s
                 Acceleration = new Vector2(0, 0),
                 Mass = 20
             });
-            PhysicsShapes.Add(new DrawableRectangle()
+            PhysicsShapes.Add(new DrawableCircle()
             {
-                Height = 20,
-                Width = 20,
+                Radius = 10,
                 Position = new Avalonia.Point(90, 90),
                 Color = new Color(255, 255, 0, 0),
                 Velocity = new Vector2(0, 0), // px/s
@@ -117,6 +115,8 @@ namespace Gymnasiearbete.ViewModels
                 Engine.Stop();
                 // Enable input
                 AllowInput = true;
+
+                DrawShapes?.Invoke(this, EventArgs.Empty);
             });
 
             Save = ReactiveCommand.Create(() => 
@@ -171,7 +171,7 @@ namespace Gymnasiearbete.ViewModels
                     default:
                         throw new Exception();
                 }
-                PhysicsShapes.Add((PhysicsObject)Selected);
+                Engine.PhysicsObjects.Add((PhysicsObject)Selected);
                 DrawShapes?.Invoke(this, EventArgs.Empty);
             });
         }

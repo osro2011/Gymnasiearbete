@@ -1,7 +1,6 @@
 ﻿using Engine.Objects;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Timers;
@@ -122,11 +121,41 @@ namespace Engine
                         }
                         else if (CollisionObject is Circle && PhysicsObject is Circle)
                         {
-
+                            Circle PhysicsCircle = (Circle)PhysicsObject;
+                            Circle CollisionCircle = (Circle)CollisionObject;
+                            if (Math.Sqrt(
+                                    Math.Pow((PhysicsCircle.Position.X + PhysicsCircle.Radius) - (CollisionCircle.Position.X + CollisionCircle.Radius), 2) + 
+                                    Math.Pow((PhysicsCircle.Position.Y + PhysicsCircle.Radius) - (CollisionObject.Position.Y + CollisionCircle.Radius), 2)
+                                ) <= PhysicsCircle.Radius + CollisionCircle.Radius)
+                            {
+                                Collide(PhysicsCircle, CollisionCircle);
+                            }
                         }
-                        else
+                        else if (CollisionObject is Rectangle && PhysicsObject is Circle)
                         {
+                            // http://jeffreythompson.org/collision-detection/circle-rect.php
+                            Circle PhysicsCricle = (Circle)PhysicsObject;
+                            Rectangle CollisionRectangle = (Rectangle)CollisionObject;
 
+                            float testX = (float)PhysicsCricle.Position.X + PhysicsCricle.Radius;
+                            float testY = (float)PhysicsCricle.Position.Y + PhysicsCricle.Radius;
+
+                            // which edge is closest?
+                            if (PhysicsCricle.Position.X + PhysicsCricle.Radius < CollisionRectangle.Position.X) testX = (float)CollisionRectangle.Position.X;      // test left edge
+                            else if (PhysicsCricle.Position.X + PhysicsCricle.Radius > CollisionRectangle.Position.X + CollisionRectangle.Width) testX = (float)(CollisionRectangle.Position.X + CollisionRectangle.Width);   // right edge
+                            if (PhysicsCricle.Position.Y + PhysicsCricle.Radius < CollisionRectangle.Position.Y) testY = (float)CollisionRectangle.Position.Y;      // top edge
+                            else if (PhysicsCricle.Position.Y + PhysicsCricle.Radius > CollisionRectangle.Position.Y + CollisionRectangle.Height) testY = (float)(CollisionRectangle.Position.Y + CollisionRectangle.Height);   // bottom edge
+
+                            // get distance from closest edges
+                            float distX = (float)PhysicsCricle.Position.X + PhysicsCricle.Radius - testX;
+                            float distY = (float)PhysicsCricle.Position.Y + PhysicsCricle.Radius - testY;
+                            float distance = (float)Math.Sqrt((distX * distX) + (distY * distY));
+
+                            // if the distance is less than the radius, collision!
+                            if (distance <= PhysicsCricle.Radius)
+                            {
+                                Collide(PhysicsCricle, CollisionRectangle);
+                            }
                         }
                     }
                 }

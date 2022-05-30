@@ -54,6 +54,15 @@
 						 Grid.Row="3" 
 						 Grid.Column="2"></TextBox>
 			</Grid>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Mass: "
+						   Grid.Row="0"
+						   Grid.Column="0"></TextBlock>
+				<TextBox Text="{Binding Mass}"
+							IsEnabled="{Binding DataContext.AllowInput, ElementName=MainView}"
+							Grid.Row="0"
+							Grid.Column="1"></TextBox>
+			</StackPanel>
 		</StackPanel>
 	</UserControl.Resources>
 	<!-- Main grid -->
@@ -125,7 +134,6 @@
 					<ComboBox SelectedIndex="{Binding SelectedShape}">
 						<ComboBoxItem>Rectangle</ComboBoxItem>
 						<ComboBoxItem>Circle</ComboBoxItem>
-						<ComboBoxItem>Line</ComboBoxItem>
 					</ComboBox>
 					<Button Command="{Binding CreateNewShape}" IsEnabled="{Binding AllowInput}">Create new shape</Button>
 					<!-- Edit shapes/display shape info menu -->

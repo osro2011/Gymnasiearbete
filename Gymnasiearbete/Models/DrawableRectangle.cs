@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Gymnasiearbete.Models
 {
-    public class DrawableRectangle : Rectangle, IDrawable, IPhysicsObject
+    public class DrawableRectangle : Rectangle, IDrawable
     {
         // Convert Position to Engine.Objects.Point and from Avalonia.Point 
         new public Avalonia.Point Position 

@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Gymnasiearbete.Models
 {
-    public class DrawableCircle : Circle, IDrawable, IPhysicsObject
+    public class DrawableCircle : Circle, IDrawable
     {
         // Convert Position to Engine.Objects.Point and from Avalonia.Point 
         new public Avalonia.Point Position
@@ -132,7 +132,6 @@ namespace Gymnasiearbete.Models
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
         public void InvokePropertyChanged()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
