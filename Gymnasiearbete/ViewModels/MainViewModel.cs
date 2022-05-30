@@ -73,25 +73,45 @@ namespace Gymnasiearbete.ViewModels
         public MainViewModel()
         {
             PhysicsShapes = new ObservableCollection<PhysicsObject>();
-            PhysicsShapes.Add(new DrawableRectangle()
+
+            Random rd = new Random();
+
+            for (int i = 2; i < 10; i++)
             {
-                Width = 20,
-                Height = 20,
-                Position = new Avalonia.Point(50, 50),
-                Color = new Color(255, 255, 0, 0),
-                Velocity = new Vector2(20, 20), // px/s
-                Acceleration = new Vector2(0, 0),
-                Mass = 20
-            });
-            PhysicsShapes.Add(new DrawableCircle()
-            {
-                Radius = 10,
-                Position = new Avalonia.Point(90, 90),
-                Color = new Color(255, 255, 0, 0),
-                Velocity = new Vector2(0, 0), // px/s
-                Acceleration = new Vector2(0, 0),
-                Mass = 30
-            });
+                for (int j = 2; j < 10; j++)
+                {
+                    PhysicsShapes.Add(new DrawableRectangle()
+                    {
+                        Width = 20,
+                        Height = 20,
+                        Position = new Avalonia.Point(i * 40, j * 40),
+                        Color = new Color(255, (byte)rd.Next(0, 255), (byte)rd.Next(0, 255), (byte)rd.Next(0, 255)),
+                        Velocity = new Vector2(rd.Next(-50, 50), rd.Next(-50, 50)),
+                        Acceleration = new Vector2(rd.Next(-5, 5), rd.Next(-5, 5)),
+                        Mass = rd.Next(1, 100)
+                    });
+                }
+            }
+
+            //PhysicsShapes.Add(new DrawableRectangle()
+            //{
+            //    Width = 20,
+            //    Height = 20,
+            //    Position = new Avalonia.Point(50, 50),
+            //    Color = new Color(255, 255, 0, 0),
+            //    Velocity = new Vector2(20, 20), // px/s
+            //    Acceleration = new Vector2(0, 0),
+            //    Mass = 20
+            //});
+            //PhysicsShapes.Add(new DrawableCircle()
+            //{
+            //    Radius = 10,
+            //    Position = new Avalonia.Point(90, 90),
+            //    Color = new Color(255, 255, 0, 0),
+            //    Velocity = new Vector2(0, 0), // px/s
+            //    Acceleration = new Vector2(0, 0),
+            //    Mass = 30
+            //});
 
             Engine = new PhysicsEngine();
 
